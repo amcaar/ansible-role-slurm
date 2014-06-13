@@ -1,0 +1,16 @@
+    - include tasks/blcr.yml
+    
+    - include tasks/slurm_front_2_5.yml
+      when "slurm_type_of_node == 'front'"
+
+    - include tasks/slurm_wn_2_5.yml
+      when "slurm_type_of_node == 'wn'"
+
+    - include tasks/pyslurm.yml
+      when "slurm_type_of_node == 'front'"
+
+    - include tasks/nfs_front.yml
+      when "slurm_type_of_node == 'front'"
+
+    - include tasks/nfs_wn.yml
+      when "slurm_type_of_node == 'wn'"
