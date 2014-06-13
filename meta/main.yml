@@ -1,0 +1,10 @@
+---
+galaxy_info:
+  author: "Amanda Calatrava"
+  description: Ansible role to install SLURM LRMS with checkpointing (BLCR)
+  license: MIT
+  min_ansible_version: 1.4
+  version: 0.0
+  categories:
+    - clustering
+  dependencies: []
