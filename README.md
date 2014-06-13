@@ -14,13 +14,11 @@ Usage
 =====
 
 In the "Worker Nodes":
-
 ```yml 
 roles:
     - { role: 'amcaar.slurm', slurm_type_of_node: 'wn'}
 ```
 In the "Front-end node":
-
 ```yml
 roles:
     - { role: 'amcaar.slurm', slurm_type_of_node: 'front'}
