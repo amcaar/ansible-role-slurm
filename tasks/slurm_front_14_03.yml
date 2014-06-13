@@ -1,0 +1,62 @@
+    - name: update repositories cache and install slurm dependences
+      apt: pkg=libmunge2 update_cache=yes cache_valid_time=3600
+    - apt: pkg=libpq5 update_cache=yes cache_valid_time=3600
+    - apt: pkg=openssl-blacklist update_cache=yes cache_valid_time=3600
+    - apt: pkg=munge update_cache=yes cache_valid_time=3600
+    - apt: pkg=slurm-llnl-basic-plugins update_cache=yes cache_valid_time=3600
+    - apt: pkg=libmunge-dev update_cache=yes cache_valid_time=3600
+#    - apt: pkg=gcc update_cache=yes cache_valid_time=3600
+
+    - name: download SLURM package
+      get_url: url=https://s3.amazonaws.com/amcaar/slurm-14.03.3-2.tar.bz2 dest=/home/ubuntu/slurm-14.03.3-2.tar.bz2
+
+    - name: decompress SLURM package
+      command: tar --bzip -x -f slurm-14.03.3-2.tar.bz2 chdir=/home/ubuntu/ creates=/home/ubuntu/slurm-14.03.3-2
+
+    - name: configure SLURM
+      command: ./configure --with-blcr=/usr/local/bin/ chdir=/home/ubuntu/slurm-14.03.3-2 creates=/home/ubuntu/slurm-14.03.3-2/config.log
+
+    - name: compile (make) SLURM
+      command: make chdir=/home/ubuntu/slurm-14.03.3-2 creates=/home/ubuntu/slurm-14.03.3-2/src/slurmctld
+
+    - name: install SLURM
+      command: make install chdir=/home/ubuntu/slurm-14.03.3-2 creates=/usr/local/bin/srun
+
+    - name: generate munge key
+      shell: dd if=/dev/urandom bs=1 count=1024 > /etc/munge/munge.key creates=/etc/munge/munge.key
+
+    - name: copy the munge.key to a temp directory
+      command: cp /etc/munge/munge.key /tmp/ creates=/tmp/munge.key
+
+    - name: change the owner of munge key
+      command: chown munge:munge munge.key chdir=/etc/munge/
+
+    - name: change the permissions of munge key
+      command: chmod 400 munge.key chdir=/etc/munge/
+
+    - name: start munge daemon
+      command: /etc/init.d/munge start
+      ignore_errors: yes
+
+    - name: download from S3 the slurm.conf file
+      get_url: url=https://s3.amazonaws.com/amcaar/slurm_14.03.conf dest=/usr/local/etc/slurm.conf
+
+    - name: configure compute nodes section of slurm.conf
+      lineinfile: dest=/usr/local/etc/slurm.conf regexp='NodeName=wnone-0 CPUs=1 State=UNKNOWN' line='NodeName=wnone-[0-{{IM_WN_NUM_VMS|int - 1}}] CPUs=1 State=UNKNOWN' state=present
+    - lineinfile: dest=/usr/local/etc/slurm.conf regexp='PartitionName=debug Nodes=wnone-0 Default=YES MaxTime=INFINITE State=UP' line='PartitionName=debug Nodes=wnone-[0-{{IM_WN_NUM_VMS|int - 1}}] Default=YES MaxTime=INFINITE State=UP' state=present
+
+    - name: create slurm user
+      shell: echo "slurm:x:2000:2000:slurm admin:/home/slurm:/bin/bash" >> /etc/passwd
+    - shell: echo "slurm:x:2000:slurm" >> /etc/group
+    - command: pwconv
+
+    - name: create folders used by SLURM and set slurm owner
+      file: path=/var/spool/slurm state=directory
+    - command: chown -R slurm:slurm /var/spool/slurm
+    - file: path=/var/log/slurm state=directory
+    - command: chown -R slurm:slurm /var/log/slurm
+    - file: path=/var/slurm/checkpoint state=directory
+    - command: chown -R slurm:slurm /var/slurm/checkpoint
+
+    - name: start slurmctld daemon
+      command: slurmctld

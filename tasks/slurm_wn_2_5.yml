@@ -1,0 +1,53 @@
+    - name: update repositories cache and install slurm dependences
+      apt: pkg=libmunge2 update_cache=yes cache_valid_time=3600
+    - apt: pkg=libpq5 update_cache=yes cache_valid_time=3600
+    - apt: pkg=openssl-blacklist update_cache=yes cache_valid_time=3600
+    - apt: pkg=munge update_cache=yes cache_valid_time=3600
+    - apt: pkg=slurm-llnl-basic-plugins update_cache=yes cache_valid_time=3600
+    - apt: pkg=libmunge-dev update_cache=yes cache_valid_time=3600
+#    - apt: pkg=gcc update_cache=yes cache_valid_time=3600
+
+    - name: download SLURM package
+      get_url: url=https://s3.amazonaws.com/amcaar/slurm-2.5.7.tar.bz2 dest=/home/ubuntu/slurm-2.5.7.tar.bz2
+
+    - name: decompress SLURM package
+      command: tar --bzip -x -f slurm-2.5.7.tar.bz2 chdir=/home/ubuntu/ creates=/home/ubuntu/slurm-2.5.7
+
+    - name: configure SLURM
+      command: ./configure --with-blcr=/usr/local/bin/ chdir=/home/ubuntu/slurm-2.5.7 creates=/home/ubuntu/slurm-2.5.7/config.log
+
+    - name: compile (make) SLURM
+      command: make chdir=/home/ubuntu/slurm-2.5.7 creates=/home/ubuntu/slurm-2.5.7/src/slurmctld
+
+    - name: install SLURM
+      command: make install chdir=/home/ubuntu/slurm-2.5.7 creates=/usr/local/bin/srun
+
+    - name: copy munge.key file from the frontend
+      copy: src=/tmp/munge.key dest=/etc/munge/munge.key
+
+    - name: change the owner of munge key
+      command: chown munge:munge munge.key chdir=/etc/munge/
+
+    - name: change the permissions of munge key
+      command: chmod 400 munge.key chdir=/etc/munge/
+
+    - name: start munge daemon
+      command: /etc/init.d/munge start
+      ignore_errors: yes
+
+    - name: copy slurm.conf file from the frontend
+      copy: src=/usr/local/etc/slurm.conf dest=/usr/local/etc/slurm.conf
+
+    - name: create slurm user
+      shell: echo "slurm:x:2000:2000:slurm admin:/home/slurm:/bin/bash" >> /etc/passwd
+    - shell: echo "slurm:x:2000:slurm" >> /etc/group
+    - command: pwconv
+
+    - name: create folders used by SLURM and set slurm owner
+      file: path=/var/spool/slurm state=directory
+    - command: chown -R slurm:slurm /var/spool/slurm
+    - file: path=/var/log/slurm state=directory
+    - command: chown -R slurm:slurm /var/log/slurm
+
+    - name: start slurmd daemon
+      command: slurmd

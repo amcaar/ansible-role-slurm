@@ -1,0 +1,14 @@
+    - name: update repositories cache and install pyslurm dependences
+      apt: pkg=python-dev update_cache=yes cache_valid_time=3600
+    - apt: pkg=git update_cache=yes cache_valid_time=3600
+    - apt: pkg=cython update_cache=yes cache_valid_time=3600
+
+    - name: git checkout the pyslurm repository
+      git: repo=git://github.com/gingergeeks/pyslurm dest=/home/ubuntu/pyslurm
+
+    - name: build pyslurm
+      command: python setup.py build --slurm=/usr/local chdir=/home/ubuntu/pyslurm creates=/home/ubuntu/pyslurm/pyslurm/pyslurm.c
+
+    - name: install pyslurm
+      command: python setup.py install chdir=/home/ubuntu/pyslurm creates=/usr/local/lib/python2.7/dist-packages/pyslurm
+

@@ -1,0 +1,8 @@
+    - name: update repositories cache and install slurm dependences
+      apt: pkg=nfs-kernel-server update_cache=yes cache_valid_time=3600
+
+    - name: export the directories editing the file /etc/exports
+      lineinfile: dest=/etc/exports line="/home           10.0.0.0/24(rw,sync,no_root_squash,no_subtree_check)"
+
+    - name: export exports file
+      command: exportfs -ra chdir=/home/ubuntu/
