@@ -1,14 +1,14 @@
 - include: blcr.yml
-   
+
 - include: slurm_front_2_5.yml
   when "slurm_type_of_node == 'front'"
   
 - include: slurm_wn_2_5.yml
   when "slurm_type_of_node == 'wn'"
-
+  
 - include: pyslurm.yml
   when "slurm_type_of_node == 'front'"
-
+  
 - include: nfs_front.yml
   when "slurm_type_of_node == 'front'"
 
