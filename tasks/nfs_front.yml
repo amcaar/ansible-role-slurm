@@ -1,4 +1,4 @@
-    - name: update repositories cache and install slurm dependences
+    - name: update repositories cache and install NFS
       apt: pkg=nfs-kernel-server update_cache=yes cache_valid_time=3600
 
     - name: export the directories editing the file /etc/exports
