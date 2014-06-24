@@ -46,9 +46,9 @@
       get_url: url=https://s3.amazonaws.com/amcaar/slurm.conf dest=/usr/local/etc/slurm.conf
 
     - name: configure compute nodes section of slurm.conf
-      lineinfile: dest=/usr/local/etc/slurm.conf regexp='NodeName=' line='NodeName=wnone_[0-{{IM_WN_NUM_VMS|int - 1}}] CPUs=1 State=UNKNOWN' state=present
+      lineinfile: dest=/usr/local/etc/slurm.conf regexp='NodeName=' line='NodeName=wnone[0-{{IM_WN_NUM_VMS|int - 1}}] CPUs=1 State=UNKNOWN' state=present
       when: IM_WN_NUM_VMS is defined
-    - lineinfile: dest=/usr/local/etc/slurm.conf regexp='PartitionName=' line='PartitionName=debug Nodes=wnone_[0-{{IM_WN_NUM_VMS|int - 1}}] Default=YES MaxTime=INFINITE State=UP' state=present
+    - lineinfile: dest=/usr/local/etc/slurm.conf regexp='PartitionName=' line='PartitionName=debug Nodes=wnone[0-{{IM_WN_NUM_VMS|int - 1}}] Default=YES MaxTime=INFINITE State=UP' state=present
       when: IM_WN_NUM_VMS is defined
 
     - name: create slurm user
