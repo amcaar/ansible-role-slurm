@@ -1,4 +1,8 @@
 - include: blcr.yml
+  when: "cloud == 'one'"
+
+- include: blcr-ec2.yml
+  when: "cloud == 'ec2'"
 
 - include: slurm_front_2_5.yml
   when: "slurm_type_of_node == 'front'"
