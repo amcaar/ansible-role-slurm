@@ -21,7 +21,7 @@ roles:
 In the "Front-end node":
 ```yml
 roles:
-    - { role: 'amcaar.slurm', slurm_type_of_node: 'front', cloud 'ec2'}
+    - { role: 'amcaar.slurm', slurm_type_of_node: 'front', cloud: 'ec2'}
 ```
 
 Note: the 'cloud' parameter specifies the provider of cloud computing resources that you want to use (by default, it is used 'one')
