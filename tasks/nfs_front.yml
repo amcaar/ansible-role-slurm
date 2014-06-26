@@ -2,7 +2,7 @@
       apt: pkg=nfs-kernel-server update_cache=yes cache_valid_time=3600
 
     - name: specify the NFS port
-      lineinfile: dest=/etc/default/nfs-kernel-server regexp=^RPCMOUNTDOPTS line="RPCMOUNTDOPTS="--manage-gids --port 2048""
+      lineinfile: dest=/etc/default/nfs-kernel-server regexp=^RPCMOUNTDOPTS line='RPCMOUNTDOPTS="--manage-gids --port 2048"'
 
     - name: export the directories editing the file /etc/exports
       lineinfile: dest=/etc/exports line="/home           10.0.0.0/24(rw,sync,no_root_squash,no_subtree_check)"
