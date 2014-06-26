@@ -21,8 +21,9 @@
     - name: compile (make) BLCR
       command: make chdir=/home/ubuntu/blcr-0.8.5/builddir creates=/home/ubuntu/blcr-0.8.5/builddir/bin
 
-    - name: check the compilation of BLCR
-      shell: make insmod check > test.log chdir=/home/ubuntu/blcr-0.8.5/builddir creates=/home/ubuntu/blcr-0.8.5/builddir/test.log
+#    Lo quito para que vaya mas rapido
+#    - name: check the compilation of BLCR
+#      shell: make insmod check > test.log chdir=/home/ubuntu/blcr-0.8.5/builddir creates=/home/ubuntu/blcr-0.8.5/builddir/test.log
 
     - name: install BLCR
       command: make install chdir=/home/ubuntu/blcr-0.8.5/builddir creates=/usr/local/lib/blcr/3.2.0-23-virtual/blcr.ko
