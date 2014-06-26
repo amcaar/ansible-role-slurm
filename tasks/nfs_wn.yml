@@ -1,6 +1,9 @@
     - name: update repositories cache and install NFS
       apt: pkg=nfs-common update_cache=yes cache_valid_time=3600
 
+    - name: specify the NFS port
+      lineinfile: dest=/etc/default/nfs-common regexp=^STATDOPTS line='TATDOPTS="--port 2046 --outgoing-port 2047"'
+
     - name: mount the shared directories
       command: mount -t nfs {{ hostvars[groups['front'][0]]['IM_NODE_NET_1_IP']}}:/home /home creates=/home/ubuntu/pyslurm
 
