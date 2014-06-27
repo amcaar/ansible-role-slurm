@@ -7,5 +7,9 @@
     - name: export the directories editing the file /etc/exports
       lineinfile: dest=/etc/exports line="/home           10.0.0.0/24(rw,sync,no_root_squash,no_subtree_check)"
 
+    - name: export the directories editing the file /etc/exports
+      lineinfile: dest=/etc/exports line="/home           10.0.0.0/8(rw,sync,no_root_squash,no_subtree_check)"
+      when: "cloud == 'ec2'"
+
     - name: export exports file
       command: exportfs -ra chdir=/home/ubuntu/
