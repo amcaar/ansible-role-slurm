@@ -13,4 +13,4 @@
     #- lineinfile: dest=/usr/local/ckptman/config.py regexp=CKPT_ALGORITHM line="CKPT_ALGORITHM = 'HOUR'"
 
     # Start ckptman service    
-    - service: name=ckptman state=started
+    #- service: name=ckptman state=started
