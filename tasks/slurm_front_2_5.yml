@@ -67,7 +67,7 @@
     - name: prepare epilog files
       file: path=/usr/local/slurm state=directory
     - command: chown -R slurm:slurm /usr/local/slurm
-    - get_url: url=https://s3.amazonaws.com/amcaar/epilog_controller dest=/usr/local/slurm/epilog_controller
+    - get_url: url=https://s3.amazonaws.com/amcaar/epilog_controller dest=/usr/local/slurm/epilog_controller mode=0755
     - command: chown slurm:slurm /usr/local/slurm/epilog_controller
 
     - name: start slurmctld daemon
