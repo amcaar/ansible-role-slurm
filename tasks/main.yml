@@ -1,5 +1,5 @@
-#- command: ln -sf /usr/share/zoneinfo/Europe/Madrid localtime
-- file: src=/usr/share/zoneinfo/Europe/Madrid dest=/etc/localtime state=link
+- command: ln -sf /usr/share/zoneinfo/Europe/Madrid localtime chdir=/etc/
+#- file: src=/usr/share/zoneinfo/Europe/Madrid dest=/etc/localtime state=link
   when: "cloud == 'ec2'"
 
 - include: blcr.yml
