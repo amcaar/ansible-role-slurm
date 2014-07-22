@@ -7,7 +7,7 @@
     #- file: path=/usr/local/ckptman/ckptman mode=0755
     #- file: path=/usr/local/ckptman/ckptman_daemon.py mode=0755
     #- file: src=/usr/local/ckptman dest=/usr/local/ckptman state=link
-    - file: src=/usr/local/ckptman/ckptman dest=/etc/init.d/ckptman state=link
+    - file: src=/usr/local/ckptman/launcher dest=/etc/init.d/ckptman state=link
 
     # ckptman config file
     #- lineinfile: dest=/usr/local/ckptman/config.py regexp=CKPT_ALGORITHM line="CKPT_ALGORITHM = 'HOUR'"
