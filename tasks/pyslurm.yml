@@ -4,7 +4,7 @@
     - apt: pkg=cython update_cache=yes cache_valid_time=3600
 
     - name: git checkout the pyslurm repository
-      git: repo=git://github.com/gingergeeks/pyslurm dest=/home/ubuntu/pyslurm
+      git: repo=git://github.com/gingergeeks/pyslurm dest=/home/ubuntu/pyslurm accept_hostkey=yes
 
     - name: build pyslurm
       command: python setup.py build --slurm=/usr/local chdir=/home/ubuntu/pyslurm creates=/home/ubuntu/pyslurm/pyslurm/pyslurm.c
