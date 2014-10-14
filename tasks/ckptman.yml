@@ -14,3 +14,6 @@
 
     # Start ckptman service    
     #- service: name=ckptman state=started
+
+    - name: install iso8601 library to process the timestamps of EC2
+      pip: name=iso8601
