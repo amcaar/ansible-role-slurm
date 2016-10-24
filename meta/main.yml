@@ -12,5 +12,8 @@ galaxy_info:
     - 7  
   - name: Ubuntu
     versions:
-    - 14.04y
+    - trustly
+  galaxy_tags:
+    - slurm
+    - lrms
   dependencies: []
