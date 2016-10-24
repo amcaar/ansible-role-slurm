@@ -12,7 +12,7 @@ galaxy_info:
     - 7  
   - name: Ubuntu
     versions:
-    - trustly
+    - trusty
   galaxy_tags:
     - slurm
     - lrms
